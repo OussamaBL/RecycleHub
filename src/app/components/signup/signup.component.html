@@ -1,0 +1,77 @@
+<!-- src/app/components/signup/signup.component.html -->
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-4xl">
+    <h3 class="text-2xl font-bold text-center mb-6">Create an account</h3>
+    <form [formGroup]="signupForm" (ngSubmit)="onSignup()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Left Column -->
+      <div>
+        <div>
+          <label class="block mb-2 text-gray-700" for="email">Email</label>
+          <input type="email" id="email" placeholder="Email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" formControlName="email">
+          <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)" class="text-red-500 mt-1 text-sm">
+            <div *ngIf="signupForm.get('email')?.errors?.['required']">Email is required.</div>
+            <div *ngIf="signupForm.get('email')?.errors?.['email']">Please enter a valid email.</div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="block mb-2 text-gray-700">Password</label>
+          <input type="password" placeholder="Password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" formControlName="password">
+          <div *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)" class="text-red-500 mt-1 text-sm">
+            <div *ngIf="signupForm.get('password')?.errors?.['required']">Password is required.</div>
+            <div *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.</div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="block mb-2 text-gray-700">First Name</label>
+          <input type="text" placeholder="First Name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" formControlName="firstName">
+          <div *ngIf="signupForm.get('firstName')?.invalid && (signupForm.get('firstName')?.dirty || signupForm.get('firstName')?.touched)" class="text-red-500 mt-1 text-sm">
+            <div *ngIf="signupForm.get('firstName')?.errors?.['required']">First Name is required.</div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="block mb-2 text-gray-700">Last Name</label>
+          <input type="text" placeholder="Last Name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" formControlName="lastName">
+          <div *ngIf="signupForm.get('lastName')?.invalid && (signupForm.get('lastName')?.dirty || signupForm.get('lastName')?.touched)" class="text-red-500 mt-1 text-sm">
+            <div *ngIf="signupForm.get('lastName')?.errors?.['required']">Last Name is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div>
+        <div>
+          <label class="block mb-2 text-gray-700">Address</label>
+          <input type="text" placeholder="Address" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" formControlName="address">
+          <div *ngIf="signupForm.get('address')?.invalid && (signupForm.get('address')?.dirty || signupForm.get('address')?.touched)" class="text-red-500 mt-1 text-sm">
+            <div *ngIf="signupForm.get('address')?.errors?.['required']">Address is required.</div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="block mb-2 text-gray-700">Phone Number</label>
+          <input type="tel" placeholder="Phone Number" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" formControlName="phoneNumber">
+          <div *ngIf="signupForm.get('phoneNumber')?.invalid && (signupForm.get('phoneNumber')?.dirty || signupForm.get('phoneNumber')?.touched)" class="text-red-500 mt-1 text-sm">
+            <div *ngIf="signupForm.get('phoneNumber')?.errors?.['required']">Phone Number is required.</div>
+            <div *ngIf="signupForm.get('phoneNumber')?.errors?.['pattern']">Please enter a valid phone number.</div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="block mb-2 text-gray-700">Date of Birth</label>
+          <input type="date" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" formControlName="dateOfBirth">
+          <div *ngIf="signupForm.get('dateOfBirth')?.invalid && (signupForm.get('dateOfBirth')?.dirty || signupForm.get('dateOfBirth')?.touched)" class="text-red-500 mt-1 text-sm">
+            <div *ngIf="signupForm.get('dateOfBirth')?.errors?.['required']">Date of Birth is required.</div>
+          </div>
+        </div>
+        <div class="mt-12">
+          <button class="w-full px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-900" type="submit" [disabled]="signupForm.invalid">Sign up</button>
+        </div>
+      </div>
+    </form>
+    <div *ngIf="errorMessage" class="text-red-500 mt-4 text-center">
+      {{ errorMessage }}
+    </div>
+    <div class="mt-6 text-center">
+      <a [routerLink]="['/login']" routerLinkActive="router-link-active"  href="#" class="text-sm text-blue-600 hover:underline">You have an account? Login</a>
+    </div>
+  </div>
+
+</div>
