@@ -68,4 +68,31 @@ export class AuthService {
     localStorage.setItem('currentUser', JSON.stringify(user));
     localStorage.setItem('isAuthenticated', 'true');
   }
+
+  login(email: string, password: string): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}users?email=${email}`).pipe(
+      switchMap(users => {
+        if (users.length === 0) {
+          return throwError(() => new Error('User not found'));
+        }
+
+        const user = users[0];
+
+        const isPasswordValid = bcrypt.compareSync(password, user.password);
+
+        if (!isPasswordValid) {
+          return throwError(() => new Error('Invalid password'));
+        }
+
+        this.storeUserInfo(user);
+
+        return of(user);
+      }),
+      catchError(error => {
+        console.error('Login error', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
 }
