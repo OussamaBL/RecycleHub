@@ -25,6 +25,15 @@ export class AuthService {
     return false;
   }
 
+  register(user: User): boolean {
+    const existingUser = this.getUser();
+    if (existingUser) {
+      return false; // User already exists
+    }
+    localStorage.setItem("user", JSON.stringify(user));
+    return true;
+  }
+
   getUser(): User | null {
     const userData = localStorage.getItem("user");
     return userData ? JSON.parse(userData) : null;

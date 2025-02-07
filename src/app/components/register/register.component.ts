@@ -6,6 +6,15 @@ import {HttpClientModule} from "@angular/common/http";
 import { AuthService } from '../../services/auth/auth.service';
 import Swal from "sweetalert2";
 
+export interface User {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  birthDate: string;
+  address: string;
+}
 
 @Component({
   selector: 'app-register',
@@ -47,9 +56,21 @@ export class RegisterComponent implements OnInit{
     const isRegistered = this.authService.register(user);
 
     if (isRegistered) {
-      this.router.navigate(['/login']);
+      Swal.fire({
+        icon: 'success',
+        title: 'Register Successful',
+        text: 'Welcome to the application!',
+        confirmButtonText: 'OK',
+      }).then(() => {
+        this.router.navigate(['/member']);
+      });
     } else {
-      alert('User already exists!');
+      Swal.fire({
+        icon: 'error',
+        title: 'Register Failed',
+        text: 'An unexpected error occurred.',
+        confirmButtonText: 'Try Again',
+      });
     }
   }
 

@@ -1,1 +1,58 @@
-<p>register works!</p>
+<!-- src/app/components/auth/registration/registration.component.html -->
+<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="space-y-4">
+
+  <!-- Email Field -->
+  <div>
+    <label for="email">Email</label>
+    <input id="email" formControlName="email" type="email" class="input" />
+    <div *ngIf="formControl.email.invalid && formControl.email.touched" class="text-red-500">Please enter a valid email.</div>
+  </div>
+
+  <!-- Password Field -->
+  <div>
+    <label for="password">Password</label>
+    <input id="password" formControlName="password" type="password" class="input" />
+    <div *ngIf="formControl.password.invalid && formControl.password.touched" class="text-red-500">Password must be at least 6 characters.</div>
+  </div>
+
+  <!-- First Name Field -->
+  <div>
+    <label for="firstName">First Name</label>
+    <input id="firstName" formControlName="firstName" type="text" class="input" />
+    <div *ngIf="formControl.firstName.invalid && formControl.firstName.touched" class="text-red-500">First name is required.</div>
+  </div>
+
+  <!-- Last Name Field -->
+  <div>
+    <label for="lastName">Last Name</label>
+    <input id="lastName" formControlName="lastName" type="text" class="input" />
+    <div *ngIf="formControl.lastName.invalid && formControl.lastName.touched" class="text-red-500">Last name is required.</div>
+  </div>
+
+  <!-- Phone Number Field -->
+  <div>
+    <label for="phoneNumber">Phone Number</label>
+    <input id="phoneNumber" formControlName="phoneNumber" type="text" class="input" />
+    <div *ngIf="formControl.phoneNumber.invalid && formControl.phoneNumber.touched" class="text-red-500">Please enter a valid phone number.</div>
+  </div>
+
+  <!-- Birth Date Field -->
+  <div>
+    <label for="birthDate">Birth Date</label>
+    <input id="birthDate" formControlName="birthDate" type="date" class="input" />
+    <div *ngIf="formControl.birthDate.invalid && formControl.birthDate.touched" class="text-red-500">Birth date is required.</div>
+  </div>
+
+  <!-- Address Field -->
+  <div>
+    <label for="address">Address</label>
+    <textarea id="address" formControlName="address" class="input"></textarea>
+    <div *ngIf="formControl.address.invalid && formControl.address.touched" class="text-red-500">Address is required.</div>
+  </div>
+
+  <!-- Submit Button -->
+  <div>
+    <button type="submit" [disabled]="registrationForm.invalid" class="btn">Register</button>
+  </div>
+
+</form>
