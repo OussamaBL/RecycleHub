@@ -23,7 +23,7 @@
           <i class="fa-solid fa-home"></i>
           <span class="ms-3">Home</span>
         </a>
-        @if (!isCollector()) {  
+        @if (!isCollector()) {
         <a
           routerLink="/profile"
           class="flex items-center p-2 text-gray-900 rounded-lg dar:text-white hover:bg-gray-100 dar:hover:bg-gray-700 group"
@@ -40,7 +40,8 @@
           <i class="fa-solid fa-user"></i>
           <span class="ms-3">Collection Request</span>
         </a>
-      }@else{
+      }
+        @else{
         <a
           routerLink="/collector"
           class="flex items-center p-2 text-gray-900 rounded-lg dar:text-white hover:bg-gray-100 dar:hover:bg-gray-700 group"
