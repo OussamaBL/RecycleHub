@@ -115,4 +115,80 @@ export class AuthService {
     }
   }
 
+
+  getCurrentUser(): Observable<User | null> {
+    const userString = localStorage.getItem('currentUser');
+    if (!userString) {
+      return of(null);
+    }
+
+    try {
+      const user: User = JSON.parse(userString);
+      return this.getUser(user.email).pipe(
+        map(fetchedUser => {
+          if (fetchedUser && fetchedUser.length > 0) {
+            return { ...user, password: fetchedUser[0].password };
+          }
+          return user;
+        }),
+        catchError(error => {
+          console.error('Error fetching user details:', error);
+          return of(user);
+        })
+      );
+    } catch (error) {
+      console.error('Error parsing user from localStorage:', error);
+      return of(null);
+    }
+  }
+
+  getUser(email: string): Observable<User[]> {
+    if (!email) {
+      return of([]);
+    }
+
+    return this.http.get<User[]>(`${this.apiUrl}users`, {
+      params: new HttpParams().set('email', email)
+    }).pipe(
+      catchError(error => {
+        console.error('Error fetching user:', error);
+        return of([]);
+      })
+    );
+  }
+
+
+  updateUser(user: any): Observable<any> {
+    return this.getCurrentUser().pipe(
+      switchMap(currentUser => {
+        if (!currentUser) {
+          return throwError(() => new Error('No user is currently logged in'));
+        }
+        return this.http.put<any>(`${this.apiUrl}users/${currentUser.id}`, user).pipe(
+          map(updatedUser => {
+            this.storeUserInfo(updatedUser);
+            return updatedUser;
+          }),
+          catchError(error => {
+            console.error('Update user error', error);
+            return throwError(() => new Error('Failed to update user'));
+          })
+        );
+      })
+    );
+  }
+
+  deleteUser(id: string): Observable<any> {
+    this.logout();
+    return this.http.delete<any>(`${this.apiUrl}users/${id}`).pipe(
+      map(() => {
+        this.logout();
+        return true;
+      }),
+      catchError(error => {
+        console.error('Delete user error', error);
+        return throwError(() => new Error('Failed to delete user'));
+      }));
+  }
+
 }
