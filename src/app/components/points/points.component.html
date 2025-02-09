@@ -1,0 +1,65 @@
+<app-navbar />
+<app-sidebar />
+<div class="p-4 sm:ml-64">
+  <div class="p-4 mt-5">
+    <div class=" mx-auto px-4 ">
+      <div class="bg-white shadow-sm rounded-lg p-6 max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">
+          Points Retrieval
+        </h2>
+
+        <div class="flex items-center justify-center mb-8">
+          <div class="text-center bg-blue-100 rounded-full px-6 py-4 shadow-md">
+            <p class="text-2xl font-semibold text-blue-800">
+              Your Current Points:
+              <span class="text-blue-600">{{ currentPoints }}</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            *ngFor="let option of retraitOptions"
+            class="bg-gray-50 rounded-lg p-5 shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-2"
+          >
+            <div class="text-center">
+              <h3 class="text-xl font-bold text-gray-800 mb-3">
+                {{ option.discount }}
+              </h3>
+
+              <div class="mb-4">
+                <p class="text-sm text-gray-600 mb-1">Requires:</p>
+                <p class="text-lg font-semibold text-blue-600">
+                  {{ option.points }} Points
+                </p>
+              </div>
+
+              <div class="mb-4">
+                <p class="text-sm text-gray-600 mb-1">You'll Receive:</p>
+                <p class="text-2xl font-bold text-green-600">
+                  {{ option.voucher }} Dh
+                </p>
+              </div>
+
+              <button
+                (click)="retraitPoints(option)"
+                [disabled]="currentPoints < option.points"
+                class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Retrieve Voucher
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 text-center text-gray-600">
+          <p class="text-sm">
+            * Vouchers can be used on your next purchase
+            <br />
+            * Points will be deducted after successful voucher retrieval
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
