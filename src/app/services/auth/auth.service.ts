@@ -191,4 +191,12 @@ export class AuthService {
       }));
   }
 
+  updateUserAfterCalcul(user: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}users/${user.id}`, user).pipe(
+      catchError(error => {
+        console.error('Update user error', error);
+        return throwError(() => new Error('Failed to update user'));
+      })
+    );
+  }
 }

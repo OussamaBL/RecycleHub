@@ -1,0 +1,182 @@
+<app-navbar />
+<app-sidebar />
+<div class="p-4 sm:ml-64">
+  <div class="p-4 mt-5">
+    <section class="bg-white">
+      <div class="container mx-auto px-4">
+        <div
+          class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-8 p-6"
+        >
+          <div
+            *ngFor="let request of collectionRequests | async"
+            class="bg-white rounded-xl shadow-xs p-6 transform transition-all duration-300 hover:shadow-md relative"
+          >
+            <!-- Status Badge -->
+            <!-- Replace your existing status badge with this -->
+            <div class="absolute top-4 right-4 z-10">
+              <div class="relative inline-block">
+                <button
+                  (click)="toggleDropdown(request.id!, $event)"
+                  [ngClass]="{
+                    'px-4 py-2 rounded-full text-sm font-semibold capitalize flex items-center gap-2': true,
+                    'bg-yellow-100 text-yellow-800':
+                      request.status === 'pending',
+                    'bg-green-100 text-green-800':
+                      request.status === 'accepted',
+                    'bg-red-100 text-red-800': request.status === 'rejected',
+                    'bg-blue-100 text-blue-800': request.status === 'completed'
+                  }"
+                >
+                  <span
+                    class="w-2 h-2 rounded-full"
+                    [ngClass]="{
+                      'bg-yellow-500': request.status === 'pending',
+                      'bg-green-500': request.status === 'accepted',
+                      'bg-red-500': request.status === 'rejected',
+                      'bg-blue-500': request.status === 'completed'
+                    }"
+                  ></span>
+                  {{ request.status }}
+
+                  <!-- Dropdown Arrow -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div
+                  *ngIf="openDropdownId === request.id"
+                  class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20"
+                  (click)="$event.stopPropagation()"
+                >
+                  <div class="py-1">
+                    <button
+                      *ngFor="let status of statusOptions"
+                      (click)="updateStatus(request, status, $event)"
+                      class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 capitalize"
+                      [class.font-semibold]="request.status === status"
+                    >
+                      {{ status }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Existing Image Section -->
+            <div class="relative h-48 mb-6 rounded-lg overflow-hidden">
+              <img
+                [src]="request?.photos?.[0] || defaultImage"
+                [alt]="'Collection Request ' + request.id"
+                class="w-full h-full object-cover"
+              />
+            </div>
+
+            <!-- Content -->
+            <div class="space-y-4">
+              <h3 class="text-xl font-semibold text-green-900">
+                {{ request.wasteType | titlecase }} Collection
+              </h3>
+
+              <div class="text-gray-600 space-y-2">
+                <p class="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+                    />
+                  </svg>
+                  {{ request.estimatedWeight }} kg
+                </p>
+
+                <p class="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  {{ request.collectionAddress }}
+                </p>
+
+                <p class="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  {{ request.desiredDate | date : "mediumDate" }}
+                </p>
+
+                <p class="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  {{ request.desiredTimeSlot }}
+                </p>
+              </div>
+
+              <p class="text-gray-500 italic" *ngIf="request.notes">
+                "{{ request.notes }}"
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
